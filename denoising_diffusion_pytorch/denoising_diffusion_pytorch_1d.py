@@ -1,6 +1,5 @@
 import math
 from pathlib import Path
-from random import random
 from functools import partial
 from collections import namedtuple
 from multiprocessing import cpu_count
@@ -22,6 +21,7 @@ from ema_pytorch import EMA
 from tqdm.auto import tqdm
 
 from denoising_diffusion_pytorch.version import __version__
+import secrets
 
 # constants
 
@@ -682,7 +682,7 @@ class GaussianDiffusion1D(Module):
         # this technique will slow down training by 25%, but seems to lower FID significantly
 
         x_self_cond = None
-        if self.self_condition and random() < 0.5:
+        if self.self_condition and secrets.SystemRandom().random() < 0.5:
             with torch.no_grad():
                 x_self_cond = self.model_predictions(x, t).pred_x_start
                 x_self_cond.detach_()

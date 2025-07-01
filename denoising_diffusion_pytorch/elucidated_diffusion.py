@@ -1,11 +1,11 @@
 from math import sqrt
-from random import random
 import torch
 from torch import nn, einsum
 import torch.nn.functional as F
 
 from tqdm import tqdm
 from einops import rearrange, repeat, reduce
+import secrets
 
 # helpers
 
@@ -261,7 +261,7 @@ class ElucidatedDiffusion(nn.Module):
 
         self_cond = None
 
-        if self.self_condition and random() < 0.5:
+        if self.self_condition and secrets.SystemRandom().random() < 0.5:
             # from hinton's group's bit diffusion paper
             with torch.no_grad():
                 self_cond = self.preconditioned_network_forward(noised_images, sigmas)

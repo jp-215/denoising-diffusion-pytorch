@@ -1,7 +1,6 @@
 import math
 import copy
 from pathlib import Path
-from random import random
 from functools import partial
 from collections import namedtuple
 from multiprocessing import cpu_count
@@ -30,6 +29,7 @@ from denoising_diffusion_pytorch.attend import Attend
 from denoising_diffusion_pytorch.fid_evaluation import FIDEvaluation
 
 from denoising_diffusion_pytorch.version import __version__
+import secrets
 
 # constants
 
@@ -846,7 +846,7 @@ class GaussianDiffusion(Module):
         # this technique will slow down training by 25%, but seems to lower FID significantly
 
         x_self_cond = None
-        if self.self_condition and random() < 0.5:
+        if self.self_condition and secrets.SystemRandom().random() < 0.5:
             with torch.no_grad():
                 x_self_cond = self.model_predictions(x, t).pred_x_start
                 x_self_cond.detach_()
